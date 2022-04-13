@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bruneli.academia.entities.Matricula;
+import com.bruneli.academia.converter.DozerConverter;
+import com.bruneli.academia.data.entities.Aluno;
+import com.bruneli.academia.data.entities.Matricula;
+import com.bruneli.academia.data.vo.MatriculaVO;
 import com.bruneli.academia.entities.dto.MatriculaDTO;
 import com.bruneli.academia.repositories.AlunoRepository;
 import com.bruneli.academia.repositories.MatriculaRepository;
@@ -22,24 +25,26 @@ public class MatriculaServiceImpl implements MatriculaService{
 	private AlunoRepository alunoRepository;
 	
 	@Override
-	public Matricula create(MatriculaDTO matriculaDTO) {
-		Matricula matricula = new Matricula();
+	public MatriculaVO create(MatriculaDTO matriculaDTO) {
+		MatriculaVO matricula = new MatriculaVO();
 		matricula.setDataMatricula(LocalDateTime.now());
-		matricula.setAluno(alunoRepository.findById(matriculaDTO.getAluno_id()).get());
-		
-		return matriculaRepository.save(matricula);
+		Aluno al = alunoRepository.findById(matriculaDTO.getAluno_id()).get();
+		matricula.setAluno(al);
+		var entity = DozerConverter.parseObject(matricula, Matricula.class);
+		var vo = DozerConverter.parseObject(matriculaRepository.save(entity), MatriculaVO.class);
+		return vo;
 	}
 
 	@Override
-	public Matricula get(Long id) {
+	public MatriculaVO get(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Matricula> getAllByBairro(String bairro) {
-		if(bairro != null) return matriculaRepository.findByAlunoBairro(bairro);
-		return matriculaRepository.findAll();
+	public List<MatriculaVO> getAllByBairro(String bairro) {
+		if(bairro != null) return DozerConverter.parseListObjects(matriculaRepository.findByAlunoBairro(bairro), MatriculaVO.class);
+		return DozerConverter.parseListObjects(matriculaRepository.findAll(), MatriculaVO.class);
 	}
 
 	@Override

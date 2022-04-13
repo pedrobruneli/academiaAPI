@@ -1,6 +1,7 @@
 package com.bruneli.academia.controllers;
 
 import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bruneli.academia.entities.Aluno;
-import com.bruneli.academia.entities.AvaliacaoFisica;
+import com.bruneli.academia.data.entities.AvaliacaoFisica;
+import com.bruneli.academia.data.vo.AlunoVO;
 import com.bruneli.academia.entities.dto.AlunoDTO;
 import com.bruneli.academia.entities.dto.AlunoUpdateDTO;
 import com.bruneli.academia.services.impl.AlunoServiceImpl;
@@ -30,7 +31,7 @@ public class AlunoController {
 	private AlunoServiceImpl service;
 
 	@GetMapping
-	public List<Aluno> getAll(@RequestParam(value = "dataNascimento", required = false) String dataNascimento) {
+	public List<AlunoVO> getAll(@RequestParam(value = "dataNascimento", required = false) String dataNascimento) {
 		return service.getAll(dataNascimento);
 	}
 
@@ -39,21 +40,21 @@ public class AlunoController {
 		return service.getAllAvaliacaoFisicasID(id);
 	}
 
-	@PostMapping()
-	public Aluno create(@Valid @RequestBody AlunoDTO alunoDTO) {
+	@PostMapping() 	
+	public AlunoVO create(@Valid @RequestBody AlunoDTO alunoDTO) {
 		return service.create(alunoDTO);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Aluno> delete(@PathVariable Long id) {
-		return (service.delete(id) ? new ResponseEntity<Aluno>(HttpStatus.ACCEPTED) : new ResponseEntity<Aluno>(HttpStatus.NOT_FOUND));
+	public ResponseEntity<AlunoVO> delete(@PathVariable Long id) {
+		return (service.delete(id) ? new ResponseEntity<AlunoVO>(HttpStatus.ACCEPTED) : new ResponseEntity<AlunoVO>(HttpStatus.NOT_FOUND));
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Aluno> update(@PathVariable Long id, @Valid @RequestBody AlunoUpdateDTO alunoDTO) {
-		Aluno al = service.update(id, alunoDTO);
-		if(al != null) return new ResponseEntity<Aluno>(HttpStatus.ACCEPTED);
-		return new ResponseEntity<Aluno>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<AlunoVO> update(@PathVariable Long id, @Valid @RequestBody AlunoUpdateDTO alunoDTO) {
+		AlunoVO al = service.update(id, alunoDTO);
+		if(al != null) return new ResponseEntity<AlunoVO>(HttpStatus.ACCEPTED);
+		return new ResponseEntity<AlunoVO>(HttpStatus.NOT_FOUND);
 	}
 	
 

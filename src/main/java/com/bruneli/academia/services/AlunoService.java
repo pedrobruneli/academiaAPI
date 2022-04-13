@@ -2,20 +2,20 @@ package com.bruneli.academia.services;
 
 import java.util.List;
 
-import com.bruneli.academia.entities.Aluno;
-import com.bruneli.academia.entities.AvaliacaoFisica;
+import com.bruneli.academia.data.entities.AvaliacaoFisica;
+import com.bruneli.academia.data.vo.AlunoVO;
 import com.bruneli.academia.entities.dto.AlunoDTO;
 import com.bruneli.academia.entities.dto.AlunoUpdateDTO;
 
 public interface AlunoService {
 	
-	Aluno create(AlunoDTO dto);
+	AlunoVO create(AlunoDTO dto);
 	
-	Aluno get(Long id);
+	AlunoVO get(Long id);
 	
-	List<Aluno> getAll(String dataNascimento);
+	List<AlunoVO> getAll(String dataNascimento);
 
-	Aluno update(Long id, AlunoUpdateDTO updatedto);
+	AlunoVO update(Long id, AlunoUpdateDTO updatedto);
 	
 	boolean delete(Long id);
 	

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bruneli.academia.entities.Matricula;
+import com.bruneli.academia.data.vo.MatriculaVO;
 import com.bruneli.academia.entities.dto.MatriculaDTO;
 import com.bruneli.academia.services.impl.MatriculaServiceImpl;
 
@@ -24,12 +24,12 @@ public class MatriculaController {
 	private MatriculaServiceImpl service;
 	
 	@PostMapping
-	public Matricula create(@Valid @RequestBody MatriculaDTO dto) {
+	public MatriculaVO create(@Valid @RequestBody MatriculaDTO dto) {
 		return service.create(dto);
 	}
 	
 	@GetMapping
-	public List<Matricula> getAll(@RequestParam(value = "bairro",required = false) String bairro) {
+	public List<MatriculaVO> getAll(@RequestParam(value = "bairro",required = false) String bairro) {
 		return service.getAllByBairro(bairro);
 	}
 

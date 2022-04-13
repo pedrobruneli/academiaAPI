@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bruneli.academia.entities.AvaliacaoFisica;
+import com.bruneli.academia.data.entities.AvaliacaoFisica;
+import com.bruneli.academia.data.vo.AvaliacaoFisicaVO;
 import com.bruneli.academia.entities.dto.AvaliacaoFisicaDTO;
 import com.bruneli.academia.entities.dto.AvaliacaoFisicaUpdateDTO;
 import com.bruneli.academia.services.impl.AvaliacaoFisicaServiceImpl;
@@ -28,12 +29,12 @@ public class AvaliacaoFisicaController {
 	private AvaliacaoFisicaServiceImpl service;
 
 	@PostMapping
-	public AvaliacaoFisica create(@Valid @RequestBody AvaliacaoFisicaDTO dto) {
+	public AvaliacaoFisicaVO create(@Valid @RequestBody AvaliacaoFisicaDTO dto) {
 		return service.create(dto);
 	}
 
 	@GetMapping
-	public List<AvaliacaoFisica> getAll() {
+	public List<AvaliacaoFisicaVO> getAll() {
 		return service.getAll();
 	}
 	
@@ -43,10 +44,10 @@ public class AvaliacaoFisicaController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<AvaliacaoFisica> update(@PathVariable Long id, @Valid @RequestBody AvaliacaoFisicaUpdateDTO dto) {
-		AvaliacaoFisica av = service.update(id, dto);
-		if(av != null) return new ResponseEntity<AvaliacaoFisica>(HttpStatus.ACCEPTED);
-		return new ResponseEntity<AvaliacaoFisica>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<AvaliacaoFisicaVO> update(@PathVariable Long id, @Valid @RequestBody AvaliacaoFisicaUpdateDTO dto) {
+		AvaliacaoFisicaVO av = service.update(id, dto);
+		if(av != null) return new ResponseEntity<AvaliacaoFisicaVO>(HttpStatus.ACCEPTED);
+		return new ResponseEntity<AvaliacaoFisicaVO>(HttpStatus.NOT_FOUND);
 	}
 
 }

@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bruneli.academia.entities.Aluno;
-import com.bruneli.academia.entities.AvaliacaoFisica;
+import com.bruneli.academia.converter.DozerConverter;
+import com.bruneli.academia.data.entities.Aluno;
+import com.bruneli.academia.data.entities.AvaliacaoFisica;
+import com.bruneli.academia.data.vo.AvaliacaoFisicaVO;
 import com.bruneli.academia.entities.dto.AvaliacaoFisicaDTO;
 import com.bruneli.academia.entities.dto.AvaliacaoFisicaUpdateDTO;
 import com.bruneli.academia.repositories.AlunoRepository;
@@ -24,36 +26,38 @@ public class AvaliacaoFisicaServiceImpl implements AvaliacaoFisicaService{
 	private AlunoRepository alunoRepository;
 
 	@Override
-	public AvaliacaoFisica create(AvaliacaoFisicaDTO avaliacaoDTO) {
-		AvaliacaoFisica fisica = new AvaliacaoFisica();
+	public AvaliacaoFisicaVO create(AvaliacaoFisicaDTO avaliacaoDTO) {
+		AvaliacaoFisicaVO fisica = new AvaliacaoFisicaVO();
 		Aluno aluno = alunoRepository.findById(avaliacaoDTO.getAlunoId()).get();
 		fisica.setAluno(aluno);
 		fisica.setAltura(avaliacaoDTO.getAltura());
 		fisica.setPeso(avaliacaoDTO.getPeso());
-		
-		return avaliacaoFisicaRepository.save(fisica);
+		var entity = DozerConverter.parseObject(fisica, AvaliacaoFisica.class);
+		var vo = DozerConverter.parseObject(avaliacaoFisicaRepository.save(entity), AvaliacaoFisicaVO.class);
+		return vo;
 	}
 
 	@Override
-	public AvaliacaoFisica update(Long id, AvaliacaoFisicaUpdateDTO avaliacaoUpdateDTO) {
+	public AvaliacaoFisicaVO update(Long id, AvaliacaoFisicaUpdateDTO avaliacaoUpdateDTO) {
 		Optional<AvaliacaoFisica> av = avaliacaoFisicaRepository.findById(id);
 		if (av.isPresent()) {
 			av.get().setAltura(avaliacaoUpdateDTO.getAltura() != null ? avaliacaoUpdateDTO.getAltura() : av.get().getAltura());
 			av.get().setPeso(avaliacaoUpdateDTO.getPeso() != null ? avaliacaoUpdateDTO.getPeso() : av.get().getPeso());
-			return avaliacaoFisicaRepository.save(av.get());
+			var vo = DozerConverter.parseObject(avaliacaoFisicaRepository.save(av.get()), AvaliacaoFisicaVO.class);
+			return vo;
 		}
 		return null;
 	}
 
 	@Override
-	public AvaliacaoFisica get(Long id) {
+	public AvaliacaoFisicaVO get(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<AvaliacaoFisica> getAll() {
-		return avaliacaoFisicaRepository.findAll();
+	public List<AvaliacaoFisicaVO> getAll() {
+		return DozerConverter.parseListObjects(avaliacaoFisicaRepository.findAll(), AvaliacaoFisicaVO.class);
 	}
 
 	@Override

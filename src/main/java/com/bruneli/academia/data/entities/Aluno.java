@@ -1,4 +1,4 @@
-package com.bruneli.academia.entities;
+package com.bruneli.academia.data.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import org.hibernate.annotations.Cascade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
